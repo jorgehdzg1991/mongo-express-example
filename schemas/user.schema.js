@@ -9,6 +9,8 @@ const userSchema = mongoose.Schema({
     createDate: { type: Date, default: Date.now },
 });
 
+userSchema.index({ username: 1, password: 1 });
+
 const User = mongoose.model('Users', userSchema);
 
 module.exports = User;

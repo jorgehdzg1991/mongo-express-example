@@ -66,7 +66,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.get('/posts/:id', async (req, res) => {
+router.get('/:id/posts', async (req, res) => {
     try {
         const { id } = req.params;
 
