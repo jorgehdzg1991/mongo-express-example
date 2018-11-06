@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/v1/users');
+var postsRouter = require('./routes/api/v1/posts');
 
 mongoose.connect('mongodb://appUser:admin123@127.0.0.1:27017/facebook', { useNewUrlParser: true })
   .then(() => console.log('Connected to mongodb'))
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/posts', postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
