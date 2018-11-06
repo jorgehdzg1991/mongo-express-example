@@ -66,4 +66,20 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.get('/posts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await UsersController.getUserWithPosts(id);
+
+        if (!user) {
+            respond(res, NOT_FOUND);
+        } else {
+            respond(res, OK, user);
+        }
+    } catch (e) {
+        respond(res, INTERNAL_SERVER_ERROR, e);
+    }
+});
+
 module.exports = router;

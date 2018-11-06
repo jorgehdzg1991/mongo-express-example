@@ -1,9 +1,15 @@
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const User = require('../schemas/user.schema');
 
 class UsersController {
-    static getAll(conditions) {
+    static getAll() {
         return new Promise((resolve, reject) => {
-            User.find(conditions, (err, users) => {
+            User.find({}, {
+                username: 0,
+                password: 0,
+                __v: 0,
+            }, (err, users) => {
                 if (err) {
                     console.error('Error while getting all users.', err);
                     reject(err);
@@ -14,11 +20,13 @@ class UsersController {
         });
     }
 
-    static getById(id, conditions = {}) {
+    static getById(id) {
         return new Promise((resolve, reject) => {
-            const queryConditions = Object.assign({ _id: id }, conditions);
-
-            User.findOne(queryConditions, (err, user) => {
+            User.findById(id, {
+                username: 0,
+                password: 0,
+                __v: 0,
+            }, (err, user) => {
                 if (err) {
                     console.error(`Error while getting user with id: ${id}.`, err);
                     reject(err);
@@ -42,11 +50,9 @@ class UsersController {
         });
     }
 
-    static update(id, userData, conditions = {}) {
+    static update(id, userData) {
         return new Promise((resolve, reject) => {
-            const queryConditions = Object.assign({ _id: id }, conditions);
-
-            User.findOneAndUpdate(queryConditions, userData, async err => {
+            User.findByIdAndUpdate(id, userData, async err => {
                 if (err) {
                     console.error(`Error while updating user with id: ${id}.`, err);
                     reject(err);
@@ -62,11 +68,9 @@ class UsersController {
         });
     }
 
-    static delete(id, conditions = {}) {
+    static delete(id) {
         return new Promise((resolve, reject) => {
-            const queryConditions = Object.assign({ _id: id }, conditions);
-
-            User.findOneAndDelete(queryConditions, err => {
+            User.findByIdAndDelete(id, err => {
                 if (err) {
                     console.error(`Error while deleting user with id: ${id}.`, err);
                     reject(err);
@@ -74,6 +78,40 @@ class UsersController {
                     resolve();
                 }
             });
+        });
+    }
+
+    static getUserWithPosts(id) {
+        return new Promise((resolve, reject) => {
+            User.aggregate([
+                {
+                    $match: { _id: ObjectId(id) },
+                },
+                {
+                    $lookup: {
+                        from: 'posts',
+                        localField: '_id',
+                        foreignField: 'userId',
+                        as: 'posts',
+                    }
+                },
+                {
+                    $project: {
+                        username: 0,
+                        password: 0,
+                        __v: 0,
+                        'posts.__v': 0,
+                    }
+                },
+            ])
+                .exec((err, result) => {
+                    if (err) {
+                        console.error(`Error while getting user with id: ${id}.`, err);
+                        reject(err);
+                    } else {
+                        resolve(result[0]);
+                    }
+                });
         });
     }
 }
