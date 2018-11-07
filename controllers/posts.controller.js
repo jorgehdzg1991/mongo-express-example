@@ -1,9 +1,9 @@
-const Post = require('../schemas/posts.schema');
+const Posts = require('../schemas/posts.schema');
 
 class PostsController {
     static getAll(conditions) {
         return new Promise((resolve, reject) => {
-            Post.find(conditions, (err, posts) => {
+            Posts.find(conditions, (err, posts) => {
                 if (err) {
                     console.error('Error while getting all posts.', err);
                     reject(err);
@@ -18,7 +18,7 @@ class PostsController {
         return new Promise((resolve, reject) => {
             const queryConditions = Object.assign({ _id: id }, conditions);
 
-            Post.findOne(queryConditions, (err, post) => {
+            Posts.findOne(queryConditions, (err, post) => {
                 if (err) {
                     console.error(`Error while getting post with id: ${id}.`, err);
                     reject(err);
@@ -31,7 +31,7 @@ class PostsController {
 
     static create(postData) {
         return new Promise((resolve, reject) => {
-            Post.create(postData, (err, post) => {
+            Posts.create(postData, (err, post) => {
                 if (err) {
                     console.error('Error while creating post.', err);
                     reject(err);
@@ -46,7 +46,7 @@ class PostsController {
         return new Promise((resolve, reject) => {
             const queryConditions = Object.assign({ _id: id }, conditions);
 
-            Post.findOneAndUpdate(queryConditions, postData, async err => {
+            Posts.findOneAndUpdate(queryConditions, postData, async err => {
                 if (err) {
                     console.error(`Error while updating post with id: ${id}.`, err);
                     reject(err);
@@ -66,7 +66,7 @@ class PostsController {
         return new Promise((resolve, reject) => {
             const queryConditions = Object.assign({ _id: id }, conditions);
 
-            Post.findOneAndDelete(queryConditions, err => {
+            Posts.findOneAndDelete(queryConditions, err => {
                 if (err) {
                     console.error(`Error while deleting post with id: ${id}.`, err);
                     reject(err);

@@ -70,7 +70,7 @@ router.get('/:id/posts', async (req, res) => {
     try {
         const { id } = req.params;
 
-        const user = await UsersController.getUserWithPosts(id);
+        const user = await UsersController.getUserByIdWithPosts(id);
 
         if (!user) {
             respond(res, NOT_FOUND);

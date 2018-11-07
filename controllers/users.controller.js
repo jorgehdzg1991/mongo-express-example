@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const User = require('../schemas/users.schema');
+const Users = require('../schemas/users.schema');
 
 class UsersController {
     static getAll() {
         return new Promise((resolve, reject) => {
-            User.find({}, {
+            Users.find({}, {
                 password: 0,
                 __v: 0,
             }, (err, users) => {
@@ -21,7 +21,7 @@ class UsersController {
 
     static getById(id) {
         return new Promise((resolve, reject) => {
-            User.findById(id, {
+            Users.findById(id, {
                 password: 0,
                 __v: 0,
             }, (err, user) => {
@@ -37,7 +37,7 @@ class UsersController {
 
     static create(userData) {
         return new Promise((resolve, reject) => {
-            User.create(userData, (err, user) => {
+            Users.create(userData, (err, user) => {
                 if (err) {
                     console.error('Error while creating user.', err);
                     reject(err);
@@ -50,7 +50,7 @@ class UsersController {
 
     static update(id, userData) {
         return new Promise((resolve, reject) => {
-            User.findByIdAndUpdate(id, userData, async err => {
+            Users.findByIdAndUpdate(id, userData, async err => {
                 if (err) {
                     console.error(`Error while updating user with id: ${id}.`, err);
                     reject(err);
@@ -68,7 +68,7 @@ class UsersController {
 
     static delete(id) {
         return new Promise((resolve, reject) => {
-            User.findByIdAndDelete(id, err => {
+            Users.findByIdAndDelete(id, err => {
                 if (err) {
                     console.error(`Error while deleting user with id: ${id}.`, err);
                     reject(err);
@@ -79,9 +79,9 @@ class UsersController {
         });
     }
 
-    static getUserWithPosts(id) {
+    static getUserByIdWithPosts(id) {
         return new Promise((resolve, reject) => {
-            User
+            Users
                 .aggregate([
                     {
                         $match: { _id: ObjectId(id) },
@@ -115,7 +115,7 @@ class UsersController {
 
     static getUserByUsernameAndPassword(username, password) {
         return new Promise((resolve, reject) => {
-            User.find()
+            Users.find()
                 .select({ password: 0, __v: 0 })
                 .and([{ username }, { password }])
                 .hint({ username: 1, password: 1 })
@@ -132,7 +132,7 @@ class UsersController {
 
     static searchUsers(searchText) {
         return new Promise((resolve, reject) => {
-            User.find({ $text: { $search: searchText } })
+            Users.find({ $text: { $search: searchText } })
                 .select({ password: 0, __v: 0 })
                 .exec((err, result) => {
                     if (err) {
