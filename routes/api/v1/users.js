@@ -62,7 +62,7 @@ router.delete('/:id', async (req, res) => {
         await UsersController.delete(id);
         respond(res, OK);
     } catch (e) {
-        respond(res, INTERNAL_SERVER_ERROR, e);        
+        respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
 
@@ -77,6 +77,16 @@ router.get('/:id/posts', async (req, res) => {
         } else {
             respond(res, OK, user);
         }
+    } catch (e) {
+        respond(res, INTERNAL_SERVER_ERROR, e);
+    }
+});
+
+router.get('/search/:searchText', async (req, res) => {
+    try {
+        const { searchText } = req.params;
+        const users = await UsersController.searchUsers(searchText);
+        respond(res, OK, users);
     } catch (e) {
         respond(res, INTERNAL_SERVER_ERROR, e);
     }

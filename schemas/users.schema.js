@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.index({ username: 1, password: 1 });
+userSchema.index({ name: 'text', lastName: 'text', age: 'text' });
 
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model('users', userSchema);
 
 module.exports = User;

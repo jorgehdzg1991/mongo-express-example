@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const User = require('../schemas/user.schema');
+const User = require('../schemas/users.schema');
 
 class UsersController {
     static getAll() {
@@ -115,18 +115,33 @@ class UsersController {
 
     static getUserByUsernameAndPassword(username, password) {
         return new Promise((resolve, reject) => {
-            const query = User.find();
-            query.select({ password: 0, __v: 0 });
-            query.and([{ username }, { password }]);
-            query.hint({ username: 1, password: 1 });
-            query.exec((err, result) => {
-                if (err) {
-                    console.error(`Error while getting user with username: ${username}.`, err);
-                    reject(err);
-                } else {
-                    resolve(result[0]);
-                }
-            });
+            User.find()
+                .select({ password: 0, __v: 0 })
+                .and([{ username }, { password }])
+                .hint({ username: 1, password: 1 })
+                .exec((err, result) => {
+                    if (err) {
+                        console.error(`Error while getting user with username: ${username}.`, err);
+                        reject(err);
+                    } else {
+                        resolve(result[0]);
+                    }
+                });
+        });
+    }
+
+    static searchUsers(searchText) {
+        return new Promise((resolve, reject) => {
+            User.find({ $text: { $search: searchText } })
+                .select({ password: 0, __v: 0 })
+                .exec((err, result) => {
+                    if (err) {
+                        console.error(`Error while searching users with text "${searchText}".`, err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
         });
     }
 }

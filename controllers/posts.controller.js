@@ -1,4 +1,4 @@
-const Post = require('../schemas/post.schema');
+const Post = require('../schemas/posts.schema');
 
 class PostsController {
     static getAll(conditions) {
