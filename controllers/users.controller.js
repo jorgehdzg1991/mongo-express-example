@@ -10,7 +10,7 @@ class UsersController {
                 __v: 0,
             }, (err, users) => {
                 if (err) {
-                    console.error('Error while getting all users.', err);
+                    console.error('Error while getting all users.');
                     reject(err);
                 } else {
                     resolve(users);
@@ -26,7 +26,7 @@ class UsersController {
                 __v: 0,
             }, (err, user) => {
                 if (err) {
-                    console.error(`Error while getting user with id: ${id}.`, err);
+                    console.error(`Error while getting user with id: ${id}.`);
                     reject(err);
                 } else {
                     resolve(user);
@@ -39,7 +39,7 @@ class UsersController {
         return new Promise((resolve, reject) => {
             Users.create(userData, (err, user) => {
                 if (err) {
-                    console.error('Error while creating user.', err);
+                    console.error('Error while creating user.');
                     reject(err);
                 } else {
                     resolve(user);
@@ -52,7 +52,7 @@ class UsersController {
         return new Promise((resolve, reject) => {
             Users.findByIdAndUpdate(id, userData, async err => {
                 if (err) {
-                    console.error(`Error while updating user with id: ${id}.`, err);
+                    console.error(`Error while updating user with id: ${id}.`);
                     reject(err);
                 } else {
                     try {
@@ -70,7 +70,7 @@ class UsersController {
         return new Promise((resolve, reject) => {
             Users.findByIdAndDelete(id, err => {
                 if (err) {
-                    console.error(`Error while deleting user with id: ${id}.`, err);
+                    console.error(`Error while deleting user with id: ${id}.`);
                     reject(err);
                 } else {
                     resolve();
@@ -104,7 +104,7 @@ class UsersController {
                 ])
                 .exec((err, result) => {
                     if (err) {
-                        console.error(`Error while getting user with id: ${id}.`, err);
+                        console.error(`Error while getting user with id: ${id}.`);
                         reject(err);
                     } else {
                         resolve(result[0]);
@@ -121,7 +121,7 @@ class UsersController {
                 .hint({ username: 1, password: 1 })
                 .exec((err, result) => {
                     if (err) {
-                        console.error(`Error while getting user with username: ${username}.`, err);
+                        console.error(`Error while getting user with username: ${username}.`);
                         reject(err);
                     } else {
                         resolve(result[0]);
@@ -136,7 +136,7 @@ class UsersController {
                 .select({ password: 0, __v: 0 })
                 .exec((err, result) => {
                     if (err) {
-                        console.error(`Error while searching users with text "${searchText}".`, err);
+                        console.error(`Error while searching users with text "${searchText}".`);
                         reject(err);
                     } else {
                         resolve(result);

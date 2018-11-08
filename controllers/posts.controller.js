@@ -5,7 +5,7 @@ class PostsController {
         return new Promise((resolve, reject) => {
             Posts.find(conditions, (err, posts) => {
                 if (err) {
-                    console.error('Error while getting all posts.', err);
+                    console.error('Error while getting all posts.');
                     reject(err);
                 } else {
                     resolve(posts);
@@ -20,7 +20,7 @@ class PostsController {
 
             Posts.findOne(queryConditions, (err, post) => {
                 if (err) {
-                    console.error(`Error while getting post with id: ${id}.`, err);
+                    console.error(`Error while getting post with id: ${id}.`);
                     reject(err);
                 } else {
                     resolve(post);
@@ -33,7 +33,7 @@ class PostsController {
         return new Promise((resolve, reject) => {
             Posts.create(postData, (err, post) => {
                 if (err) {
-                    console.error('Error while creating post.', err);
+                    console.error('Error while creating post.');
                     reject(err);
                 } else {
                     resolve(post);
@@ -48,7 +48,7 @@ class PostsController {
 
             Posts.findOneAndUpdate(queryConditions, postData, async err => {
                 if (err) {
-                    console.error(`Error while updating post with id: ${id}.`, err);
+                    console.error(`Error while updating post with id: ${id}.`);
                     reject(err);
                 } else {
                     try {
@@ -68,7 +68,7 @@ class PostsController {
 
             Posts.findOneAndDelete(queryConditions, err => {
                 if (err) {
-                    console.error(`Error while deleting post with id: ${id}.`, err);
+                    console.error(`Error while deleting post with id: ${id}.`);
                     reject(err);
                 } else {
                     resolve();

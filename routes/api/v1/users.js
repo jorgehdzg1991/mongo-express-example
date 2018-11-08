@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
         const users = await UsersController.getAll();
         respond(res, OK, users);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -26,6 +27,7 @@ router.get('/:id', async (req, res) => {
             respond(res, OK, user);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -36,6 +38,7 @@ router.post('/', async (req, res) => {
         const user = await UsersController.create(userData);
         respond(res, OK, user);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -52,6 +55,7 @@ router.put('/:id', async (req, res) => {
             respond(res, OK, user);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -62,6 +66,7 @@ router.delete('/:id', async (req, res) => {
         await UsersController.delete(id);
         respond(res, OK);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -78,6 +83,7 @@ router.get('/:id/posts', async (req, res) => {
             respond(res, OK, user);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -88,6 +94,7 @@ router.get('/search/:searchText', async (req, res) => {
         const users = await UsersController.searchUsers(searchText);
         respond(res, OK, users);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });

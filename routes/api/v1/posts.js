@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
         const posts = await PostsController.getAll();
         respond(res, OK, posts);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -26,6 +27,7 @@ router.get('/:id', async (req, res) => {
             respond(res, OK, post);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -36,6 +38,7 @@ router.post('/', async (req, res) => {
         const post = await PostsController.create(postData);
         respond(res, OK, post);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -52,6 +55,7 @@ router.put('/:id', async (req, res) => {
             respond(res, OK, post);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
@@ -62,6 +66,7 @@ router.delete('/:id', async (req, res) => {
         await PostsController.delete(id);
         respond(res, OK);
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);        
     }
 });

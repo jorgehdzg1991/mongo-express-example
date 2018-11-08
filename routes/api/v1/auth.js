@@ -16,6 +16,7 @@ router.post('/login', async (req, res) => {
             respond(res, OK, user);
         }
     } catch (e) {
+        console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);
     }
 });
