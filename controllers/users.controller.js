@@ -144,6 +144,36 @@ class UsersController {
                 });
         });
     }
+
+    static searchUsersPaginated(searchText, page, take = 10) {
+        return new Promise((resolve, reject) => {
+            const skip = take * (page - 1);
+
+            const pipeline = [
+                { $limit: take },
+                { $project: { password: 0, __v: 0 } }
+            ];
+
+            if (skip) {
+                pipeline.splice(0, 0, { $skip: skip });
+            }
+
+            if (searchText) {
+                pipeline.splice(0, 0, { $match: { $text: { $search: searchText } } });
+            }
+
+            Users
+                .aggregate(pipeline)
+                .exec((err, result) => {
+                    if (err) {
+                        console.error('Error while getting users paginated');
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
 }
 
 module.exports = UsersController;

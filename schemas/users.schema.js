@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.index({ username: 1, password: 1 });
-userSchema.index({ name: 'text', lastName: 'text', age: 'text' });
+userSchema.index({ name: 'text', lastName: 'text', age: 'text', username: 'text' });
 
 const User = mongoose.model('users', userSchema);
 

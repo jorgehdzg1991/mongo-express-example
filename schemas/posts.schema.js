@@ -6,7 +6,7 @@ const attachmentSchema = mongoose.Schema({
 });
 
 const postSchema = mongoose.Schema({
-    userId: { type: mongoose.Schema.ObjectId, ref: 'Users', required: true },
+    userId: { type: mongoose.Schema.ObjectId, ref: 'users', required: true },
     title: { type: String, required: true },
     body: { type: String, required: true },
     attachments: [attachmentSchema],

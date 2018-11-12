@@ -99,4 +99,33 @@ router.get('/search/:searchText', async (req, res) => {
     }
 });
 
+router.post('/search', async (req, res) => {
+    try {
+        const { page, take } = req.body;
+
+        const users = await UsersController
+            .searchUsersPaginated('', page, take);
+
+        respond(res, OK, users);
+    } catch (e) {
+        console.error(e);
+        respond(res, INTERNAL_SERVER_ERROR, e);
+    }
+});
+
+router.post('/search/:searchText', async (req, res) => {
+    try {
+        const { searchText } = req.params;
+        const { page, take } = req.body;
+
+        const users = await UsersController
+            .searchUsersPaginated(searchText, page, take);
+
+        respond(res, OK, users);
+    } catch (e) {
+        console.error(e);
+        respond(res, INTERNAL_SERVER_ERROR, e);
+    }
+});
+
 module.exports = router;
