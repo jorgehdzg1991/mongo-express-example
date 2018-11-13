@@ -1,7 +1,8 @@
 const express = require('express');
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
 const UsersController = require('../../../controllers/users.controller');
 const { respond } = require('../../../helpers/response.helper');
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
+const { createJWT } = require('../../../helpers/auth.helper');
 
 const router = express.Router();
 
@@ -11,10 +12,16 @@ router.post('/login', async (req, res) => {
         const user = await UsersController.getUserByUsernameAndPassword(username, password);
 
         if (!user) {
-            respond(res, NOT_FOUND);
-        } else {
-            respond(res, OK, user);
+            return respond(res, NOT_FOUND);
         }
+
+        respond(res, OK, {
+            user,
+            authToken: createJWT({
+                sessionData: user,
+                time: 3600
+            })
+        });
     } catch (e) {
         console.error(e);
         respond(res, INTERNAL_SERVER_ERROR, e);

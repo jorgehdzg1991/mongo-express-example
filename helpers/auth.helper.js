@@ -17,8 +17,8 @@ function createJWT(details) {
         details = {};
     }
 
-    if (!details.maxAge || typeof details.maxAge !== 'number') {
-        details.maxAge = 3600
+    if (!details.time || typeof details.time !== 'number') {
+        details.time = 3600
     }
 
     details.sessionData = _.reduce(details.sessionData || {}, (memo, val, key) => {
@@ -34,7 +34,7 @@ function createJWT(details) {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: details.maxAge,
+            expiresIn: details.time,
             algorithm: 'HS256'
         }
     );

@@ -1,9 +1,12 @@
 const express = require('express');
 const PostsController = require('../../../controllers/posts.controller');
 const { respond } = require('../../../helpers/response.helper');
+const { verifyJWTMiddleware } = require('../../../middleware/request.middleware');
 const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
 
 const router = express.Router();
+
+router.all('*', verifyJWTMiddleware);
 
 router.get('/', async (req, res) => {
     try {
