@@ -1,6 +1,6 @@
 const express = require('express');
 const PostsController = require('../../../controllers/posts.controller');
-const respond = require('../../../helpers/response.helper');
+const { respond } = require('../../../helpers/response.helper');
 const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
 
 const router = express.Router();
