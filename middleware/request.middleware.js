@@ -9,7 +9,7 @@ function verifyJWTMiddleware(req, res, next) {
       req.user = decodedToken.data;
       next();
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(UNAUTHORIZED)
         .json({ message: "Invalid auth token provided." });
     })
