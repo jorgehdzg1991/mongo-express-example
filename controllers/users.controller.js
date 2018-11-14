@@ -61,7 +61,7 @@ class UsersController {
 
     static update(id, userData) {
         return new Promise((resolve, reject) => {
-            Users.findByIdAndUpdate(id, userData, async err => {
+            Users.findOneAndUpdate({ _id: id }, userData, async err => {
                 if (err) {
                     console.error(`Error while updating user with id: ${id}.`);
                     reject(err);
@@ -136,7 +136,21 @@ class UsersController {
                         console.error(`Error while getting user with username: ${username}.`);
                         reject(err);
                     } else {
-                        resolve(result[0]);
+                        const user = result[0];
+
+                        if (!user) {
+                            return resolve(undefined);
+                        }
+
+                        const userData = _.pick(user, [
+                            '_id',
+                            'name',
+                            'lastName',
+                            'age',
+                            'username'
+                        ]);
+
+                        resolve(userData);
                     }
                 });
         });
@@ -163,7 +177,7 @@ class UsersController {
 
             const pipeline = [
                 { $limit: take },
-                { $project: { password: 0, createDate: 0,__v: 0 } }
+                { $project: { password: 0, createDate: 0, __v: 0 } }
             ];
 
             if (skip) {

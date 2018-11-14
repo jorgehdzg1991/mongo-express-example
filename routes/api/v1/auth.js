@@ -1,5 +1,5 @@
 const express = require('express');
-const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } = require('http-status-codes');
+const { OK, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED, BAD_REQUEST } = require('http-status-codes');
 const UsersController = require('../../../controllers/users.controller');
 const { respond } = require('../../../helpers/response.helper');
 const { createJWT, verifyJWT } = require('../../../helpers/auth.helper');
@@ -48,18 +48,22 @@ router.post('/signup', async (req, res) => {
 
 router.post('/refreshAuthToken', async (req, res) => {
     try {
-        const { user, authToken } = req.body;
-        
+        const { userId, authToken } = req.body;
+
+        if (!authToken) {
+            return respond(res, BAD_REQUEST, 'Missing auth jwt token header.');
+        }
+
         const decodedToken = await verifyJWT(authToken);
 
-        if (decodedToken.data['_id'] !== user['_id']) {
+        if (decodedToken.data['_id'] !== userId) {
             return respond(res, UNAUTHORIZED, 'Invalid auth jwt token.');
         }
 
         respond(res, OK, {
-            user,
+            user: decodedToken.data,
             authToken: createJWT({
-                sessionData: user,
+                sessionData: decodedToken.data,
                 time: 3600
             })
         });
@@ -72,7 +76,11 @@ router.post('/refreshAuthToken', async (req, res) => {
 router.patch('/resetPassword/:userId', async (req, res) => {
     try {
         const authToken = req.headers['auth-jwt-token'];
-        
+
+        if (!authToken) {
+            return respond(res, BAD_REQUEST, 'Missing auth jwt token header.');
+        }
+
         const decodedToken = await verifyJWT(authToken);
 
         const { userId } = req.params;
