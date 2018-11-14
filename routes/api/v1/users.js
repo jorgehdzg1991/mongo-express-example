@@ -91,17 +91,6 @@ router.get('/:id/posts', async (req, res) => {
     }
 });
 
-router.get('/search/:searchText', async (req, res) => {
-    try {
-        const { searchText } = req.params;
-        const users = await UsersController.searchUsers(searchText);
-        respond(res, OK, users);
-    } catch (e) {
-        console.error(e);
-        respond(res, INTERNAL_SERVER_ERROR, e);
-    }
-});
-
 router.post('/search', async (req, res) => {
     try {
         const { page, take } = req.body;
@@ -109,6 +98,17 @@ router.post('/search', async (req, res) => {
         const users = await UsersController
             .searchUsersPaginated('', page, take);
 
+        respond(res, OK, users);
+    } catch (e) {
+        console.error(e);
+        respond(res, INTERNAL_SERVER_ERROR, e);
+    }
+});
+
+router.get('/search/:searchText', async (req, res) => {
+    try {
+        const { searchText } = req.params;
+        const users = await UsersController.searchUsers(searchText);
         respond(res, OK, users);
     } catch (e) {
         console.error(e);
