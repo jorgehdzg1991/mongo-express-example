@@ -7,13 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('mongo-example:server');
 var http = require('http');
-var dotenv = require('dotenv');
-
-/**
- * Load environment variables
- */
-
-dotenv.config();
 
 /**
  * Get port from environment and store in Express.

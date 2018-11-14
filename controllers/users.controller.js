@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Users = require('../schemas/users.schema');
@@ -7,6 +8,7 @@ class UsersController {
         return new Promise((resolve, reject) => {
             Users.find({}, {
                 password: 0,
+                createDate: 0,
                 __v: 0,
             }, (err, users) => {
                 if (err) {
@@ -23,6 +25,7 @@ class UsersController {
         return new Promise((resolve, reject) => {
             Users.findById(id, {
                 password: 0,
+                createDate: 0,
                 __v: 0,
             }, (err, user) => {
                 if (err) {
@@ -40,10 +43,18 @@ class UsersController {
             Users.create(userData, (err, user) => {
                 if (err) {
                     console.error('Error while creating user.');
-                    reject(err);
-                } else {
-                    resolve(user);
+                    return reject(err);
                 }
+
+                const userData = _.pick(user, [
+                    '_id',
+                    'name',
+                    'lastName',
+                    'age',
+                    'username'
+                ]);
+
+                resolve(userData);
             });
         });
     }
@@ -97,6 +108,7 @@ class UsersController {
                     {
                         $project: {
                             password: 0,
+                            createDate: 0,
                             __v: 0,
                             'posts.__v': 0,
                         }
@@ -116,7 +128,7 @@ class UsersController {
     static getUserByUsernameAndPassword(username, password) {
         return new Promise((resolve, reject) => {
             Users.find()
-                .select({ password: 0, __v: 0 })
+                .select({ password: 0, createDate: 0, __v: 0 })
                 .and([{ username }, { password }])
                 .hint({ username: 1, password: 1 })
                 .exec((err, result) => {
@@ -133,7 +145,7 @@ class UsersController {
     static searchUsers(searchText) {
         return new Promise((resolve, reject) => {
             Users.find({ $text: { $search: searchText } })
-                .select({ password: 0, __v: 0 })
+                .select({ password: 0, createDate: 0, __v: 0 })
                 .exec((err, result) => {
                     if (err) {
                         console.error(`Error while searching users with text "${searchText}".`);
@@ -151,7 +163,7 @@ class UsersController {
 
             const pipeline = [
                 { $limit: take },
-                { $project: { password: 0, __v: 0 } }
+                { $project: { password: 0, createDate: 0,__v: 0 } }
             ];
 
             if (skip) {

@@ -4,13 +4,29 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var dotenv = require('dotenv');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/v1/users');
 var postsRouter = require('./routes/api/v1/posts');
 var authRouter = require('./routes/api/v1/auth');
 
-mongoose.connect('mongodb://appUser:admin123@127.0.0.1:27017/facebook', { useNewUrlParser: true })
+/**
+ * Load environment variables
+ */
+
+dotenv.config();
+
+const {
+  MONGO_HOST,
+  MONGO_PORT,
+  MONGO_USER,
+  MONGO_PWD,
+} = process.env;
+
+const mongoConnectionString = `mongodb://${MONGO_USER}:${MONGO_PWD}@${MONGO_HOST}:${MONGO_PORT}/facebook`;
+
+mongoose.connect(mongoConnectionString, { useNewUrlParser: true })
   .then(() => console.log('Connected to mongodb'))
   .catch(err => console.error('Unable to connect to mongodb', err));
 
