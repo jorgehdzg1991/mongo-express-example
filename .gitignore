@@ -142,3 +142,7 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# IDEs
+.vscode/
+.idea/
